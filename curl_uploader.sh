@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 set -e
 
-# This is for cPanel webdisk
+# Check 'tree' command installed
+tree --version >/dev/null 2>&1 || { echo >&2 "this script require 'tree' command but it's not installed.  Aborting."; exit 1; }
+
+# Webdisk connaction info
 WEBDISK_HOST=https://$HOST_DOMAIN_NAME:2078
 HOST_USERNAME=user_host_username
 HOST_PASSWORD=your_host_password
+
+# Destination path
 REMOTE_PATH='/public_html'
 
+# Source path
 LOCAL_PATH='./dist'
 
 mapfile -t LS_TREE < <(tree -ifp --noreport $LOCAL_PATH)
@@ -30,4 +36,3 @@ do
               "$WEBDISK_HOST$REMOTE_PATH$REMOTE_DIR_NAME" >/dev/null 2>&1
     fi
 done
-
